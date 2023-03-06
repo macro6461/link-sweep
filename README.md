@@ -32,6 +32,10 @@ You can stay within your browser, and within your browser window in which you're
 4. When you're done writing and you want to collect all of the links in your post, click the extension. 
 5. Paste the aggregated links wherever you please.
 
+## Support
+
+The extension currently works for Medium and Blogger. I am working on adding support for other platforms (and feel free to comment some suggestions!)
+
 [Upgrade your free Medium membership](https://matt-croak.medium.com/membership) and receive unlimited, ad-free, stories from thousands of writers on a wide variety of publications. This is an affiliate link and a portion of your membership helps me be rewarded for the content I create.
 
 You can also [subscribe via email](https://matt-croak.medium.com/subscribe) and get notified whenever I post something new!
