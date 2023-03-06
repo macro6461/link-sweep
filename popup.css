@@ -1,0 +1,42 @@
+#link-sweep-popup-outer{
+    font-family:monospace;
+    background-color: white; 
+    border: solid 1px grey;
+    box-shadow: 5px 5px 5px grey;
+    padding: 10px;
+    z-index:10000;
+}
+
+#link-sweep-popup {
+    position: relative;
+    display: block;
+    margin: auto;
+    width: 300px;
+    font-family:monospace;
+    background-color: white; 
+    padding: 10px;
+    z-index:10000;
+}
+
+#link-sweep-popup p {
+    margin: 10px;
+    font-size: 14px;
+}
+
+#link-sweep-popup a {
+    display: block;
+    margin: auto;
+    color: #45b6fe;
+    font-size: 12px;
+}
+
+#link-sweep-popup a+a+a{
+    font-size: 8px;
+    float: right;
+}
+
+#link-sweep-popup img {
+    width: 100px;
+    display: block;
+    margin: auto;
+}

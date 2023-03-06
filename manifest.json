@@ -1,0 +1,44 @@
+{
+    "name": "LinkSweep",
+    "description": "Automatically aggregates and copies links within a Medium blog post.",
+    "version": "1.0.0",
+    "manifest_version": 3,
+    "icons": {
+        "16": "sweepicon.png",
+        "32": "sweepicon.png",
+        "48": "sweepicon.png",
+        "128": "sweepicon.png"
+    },
+    "permissions": [
+        "webRequest",
+        "scripting",
+        "activeTab",
+        "clipboardRead",
+        "clipboardWrite",
+        "tabs"
+    ],
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "css": ["popup.css"],
+            "run_at": "document_end"
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "assets/*",
+                "sweepicon.png"
+            ],
+            "matches": [
+                "<all_urls>"
+            ],
+            "use_dynamic_url": true
+        }
+    ],
+    "action":{
+        "default_title": "LinkSweep",
+        "default_icon": "sweepicon.png",
+        "default_popup": "popup.html"
+    }
+}
