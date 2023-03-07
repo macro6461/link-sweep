@@ -67,7 +67,7 @@ var sweep = async () => {
     await permissionsCheck().then(allowed => {
         if (allowed){
             const contentLinks = gatherUrls(type);
-            if (contentLinks.length > 0 && ok) {
+            if (contentLinks.length) {
                 return updateClipboard(contentLinks)
             }
         } else {
