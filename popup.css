@@ -1,3 +1,17 @@
+@keyframes sweep {
+    0% { transform:  rotate(0deg); }
+    10% { transform:  rotate(-4deg); }
+    20% { transform:  rotate(-8deg); }
+    30% { transform:  rotate(-4deg); }
+    40% { transform: rotate(0deg); }
+    50% { transform: rotate(4deg); }
+    60% { transform: rotate(8deg); }
+    70% { transform: rotate(4deg); }
+    80% { transform: rotate(0deg); }
+    90% { transform: rotate(-4deg); }
+    100% { transform: rotate(0deg); }
+  }
+
 #link-sweep-popup-outer{
     font-family:monospace;
     background-color: white; 
@@ -8,13 +22,14 @@
     position: fixed;
     top: 10px;
     right: 10px;
+    font-size: 12px;
+    min-height: 275px;
 }
 
 #link-sweep-popup-outer button{
     position: absolute;
     top: 0;
     right: 0;
-    font-size: 12px;
 }
 
 #link-sweep-popup {
@@ -30,14 +45,13 @@
 
 #link-sweep-popup p {
     margin: 10px;
-    font-size: 14px;
+    color: rgba(0,0,0,.84);
 }
 
 #link-sweep-popup a {
     display: block;
     margin: auto;
     color: #45b6fe;
-    font-size: 12px;
 }
 
 #link-sweep-popup a+a+a{
@@ -46,7 +60,8 @@
 }
 
 #link-sweep-popup img {
-    width: 100px;
+    width: 80px;
     display: block;
     margin: auto;
+    animation: sweep 2s infinite forwards;
 }

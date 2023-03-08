@@ -11,7 +11,7 @@ gatherUrls = (type) =>{
         link = helper(link)
         linkObj[link] = link
     }
-    return Object.values(linkObj).join("\n\n").trim()
+    return Object.values(linkObj).join("\n").trim()
 }
 
 mediumHelper = (link) => {
@@ -42,12 +42,10 @@ permissionsCheck = async () => {
 updateClipboard = async (content) => {
     navigator.clipboard.writeText(content).then(
         () => {
-            console.log('Copied links!');
             createPopUp()
         },
         (err) => {
             createPopUp(false, err)
-            console.log(err)
         }
     );
 }
@@ -69,9 +67,6 @@ popupHelper = (isNotAvailable, err) => {
         middle = `
             <div>
                 <p>LinkSweep does not have access to this website. :(</p>
-                <p>This extension currently only works for Medium and Blogger.</p>
-                <p>Please report any bugs on Github.</p>
-                <p>Thanks for using Link Sweep!</p>
             </div>
         `
     }
@@ -82,7 +77,7 @@ popupHelper = (isNotAvailable, err) => {
             <p>Could not copy links. :(</p>
             <p style="color: red;">${err}</p>
             <p>If Document is not focused, simply click in the post and try again.</p>
-            <p>Thanks for using Link Sweep!</p>
+            <p>Thanks for using LinkSweep!</p>
         </div>
     `
     }
@@ -92,8 +87,10 @@ popupHelper = (isNotAvailable, err) => {
 
 createPopUp = (isNotAvailable, err) => {
     const middle = popupHelper(isNotAvailable, err)
+    const imgUrl = chrome.runtime.getURL('./assets/sweepicon.png')
     const html = `
         <div id="link-sweep-popup">
+        <img src=${imgUrl} alt="LinkSweep Logo" title="LinkSweep Logo"/>
         <button id="close-link-sweep">x</button>
             ${middle}
             <a href="https://paypal.me/mattcroak?country.x=US&amp;locale.x=en_US" target="_blank">Paypal</a>
@@ -120,7 +117,7 @@ sweep = async () => {
     const regex = /medium|blogger/g;
     const matched = url.match(regex)
 
-    if (matched.length > 0){
+    if (matched && matched.length > 0){
         try {
             const hasPermissions = await permissionsCheck();
             if (hasPermissions) {
@@ -129,11 +126,9 @@ sweep = async () => {
                     updateClipboard(contentLinks)
                 }
             } else {
-                alert(`In order to use this extension, you need to enable access to your clipboard.\n
-                If you did enable access, please click the icon again. :)`);
+                createPopUp(false, 'Please enable clipboard access for this website.')
             }
         } catch (err) {
-            console.error(err);
             createPopUp(false, err)
         }
     } else {

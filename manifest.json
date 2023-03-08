@@ -1,20 +1,18 @@
 {
     "name": "LinkSweep",
     "description": "Automatically aggregates and copies links within a Medium blog post.",
-    "version": "1.1.1",
+    "version": "1.2.0",
     "manifest_version": 3,
     "icons": {
-        "16": "sweepicon.png",
-        "32": "sweepicon.png",
-        "48": "sweepicon.png",
-        "128": "sweepicon.png"
+        "16": "./assets/sweepicon.png",
+        "32": "./assets/sweepicon.png",
+        "48": "./assets/sweepicon.png",
+        "128": "./assets/sweepicon.png"
     },
     "permissions": [
         "scripting",
-        "activeTab",
         "clipboardRead",
-        "clipboardWrite",
-        "tabs"
+        "clipboardWrite"
     ],
     "content_scripts": [
         {
@@ -23,15 +21,11 @@
             "run_at": "document_end"
         }
     ],
-    "host_permissions": [
-        "https://medium.com/p/*",
-        "https://www.blogger.com/blog/post/edit/*"
-    ],
+    "host_permissions": ["<all_urls>"],
     "web_accessible_resources": [
         {
             "resources": [
-                "assets/*",
-                "sweepicon.png"
+                "assets/*"
             ],
             "matches": [
                 "<all_urls>"
@@ -44,6 +38,6 @@
     },
     "action":{
         "default_title": "LinkSweep",
-        "default_icon": "sweepicon.png"
+        "default_icon": "./assets/sweepicon.png"
     }
 }
