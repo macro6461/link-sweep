@@ -36,6 +36,16 @@ You can stay within your browser, and within your browser window in which you're
 
 The extension currently works for Medium and Blogger. I am working on adding support for other platforms (and feel free to comment some suggestions!)
 
+## Why not use a regular popup?
+
+Something that I noticed that made the clipboard copying difficult was that the webpage needed to be focused. However, when an extension popup is open, it is removing focus from the webpage. 
+
+Only when I immediately clicked the webpage after clicking the extension AND executed the copy logic after a one second time out did it work. 
+
+Not user friendly at all.
+
+To maintain focus I decided to just insert my own custom popup after clicking the extension. A bit of a hack but it was the only way I could ensure smooth UX and consistent copying via `navigator.clipboard...`.
+
 [Upgrade your free Medium membership](https://matt-croak.medium.com/membership) and receive unlimited, ad-free, stories from thousands of writers on a wide variety of publications. This is an affiliate link and a portion of your membership helps me be rewarded for the content I create.
 
 You can also [subscribe via email](https://matt-croak.medium.com/subscribe) and get notified whenever I post something new!

@@ -5,6 +5,16 @@
     box-shadow: 5px 5px 5px grey;
     padding: 10px;
     z-index:10000;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+}
+
+#link-sweep-popup-outer button{
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 12px;
 }
 
 #link-sweep-popup {

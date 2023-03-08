@@ -1,7 +1,4 @@
-// Unable to use 'const' and need to instead use 'let' until workaround is found.
-// Unfortunately when re-injecting script, you get an error saying [FUNCTION] was already declared.
-
-var gatherUrls = (type) =>{
+gatherUrls = (type) =>{
 
     const functionsObj = {
         'medium': mediumHelper,
@@ -18,10 +15,10 @@ var gatherUrls = (type) =>{
         linkObj[link] = link
     }
 
-    return Object.values(linkObj).join("\n\n")
+    return Object.values(linkObj).join("\n\n").trim()
 }
 
-var mediumHelper = (link) => {
+mediumHelper = (link) => {
     if (link.className.indexOf('markup--p') > -1){
         let l = link.href.split(/\?url\=/)[1]
         l = l ?? link.href
@@ -30,52 +27,92 @@ var mediumHelper = (link) => {
     }
 }
 
-var bloggerHelper = (link) => {
-    if (link){
-        if (link.getAttribute('data-original-attrs')){
-            return JSON.parse(link.getAttribute('data-original-attrs'))['data-original-href']
-        }
-    } else {
-        
+bloggerHelper = (link) => {
+    if (link && link.getAttribute('data-original-attrs')){
+        return JSON.parse(link.getAttribute('data-original-attrs'))['data-original-href']
     }
 }
 
-var permissionsCheck = async () => {
-    let read = await navigator.permissions.query({name: 'clipboard-read'})
-    let write = await navigator.permissions.query({name: 'clipboard-write'})
-    return read.state === 'granted' && write.state === 'granted'
-}
-
-var updateClipboard = (contentLinks) => {
-    
-    navigator.clipboard.writeText(contentLinks).then(() => {
-        console.log('Copied links!')
-        return true
-      /* clipboard successfully set */
-    }, () => {
-        console.log('Could not copy links!')
-        alert(`In order to use this extension, you need to enable access to your clipboard.\n
-        If you did enable access, please click the icon again. :)`)
-        return false
+permissionsCheck = async () => {
+    const read = await navigator.permissions.query({
+        name: 'clipboard-read',
     });
+    const write = await navigator.permissions.query({
+        name: 'clipboard-write',
+    });
+    return write.state === 'granted' && read.state !== 'denied';
 }
 
-var sweep = async () => {
+updateClipboard = async (content) => {
+    navigator.clipboard.writeText(content).then(
+        () => {
+            console.log('Copied links!');
+            createPopUp()
+        },
+        (err) => {
+            console.log(err)
+        }
+    );
+}
+
+removeSelf = (e) => {
+    e.target.parentElement.parentElement.remove()
+}
+
+createPopUp = (type) => {
+    const html = `
+        <div id="link-sweep-popup">
+        <button id="close-link-sweep">x</button>
+            <div>
+                <p>Links copied to clipboard!</p>
+                <p>If you liked this tool, please leave a tip or follow me on Medium!</p>
+                <p>Please report any bugs on Github.</p>
+                <p>Thanks for using Link Sweep!</p>
+            </div>
+            <a href="https://paypal.me/mattcroak?country.x=US&amp;locale.x=en_US" target="_blank">Paypal</a>
+            <a href="https://matt-croak.medium.com/membership" target="_blank">Medium</a>
+            <a href="https://www.vecteezy.com/free-vector/broom-icon" target="_blank">Broom Icon Vectors by Vecteezy</a>
+        </div>
+    `
+    const popup = document.createElement('div')
+    popup.id = "link-sweep-popup-outer"
+    popup.innerHTML = html
+    // Use top.document to access the outermost document.
+    // Useful for blogger which uses an iframe for the post editing space.
+    // Works for both Medium and Blogger.
+    top.document.body.appendChild(popup)
+    top.document.getElementById('close-link-sweep').addEventListener('click', removeSelf)
+}
+
+sweep = async () => {
+
+    // be sure to remove any remaining popups
+    var orphan = document.getElementById('link-sweep-popup-outer')
+    if (orphan) orphan.remove()
+
     const url = window.location.href
     const regex = /medium|blogger/g;
-    const type = url.match(regex)[0]
-    await permissionsCheck().then(allowed => {
-        if (allowed){
-            const contentLinks = gatherUrls(type);
-            if (contentLinks.length) {
-                return updateClipboard(contentLinks)
-            }
-        } else {
-            alert(`In order to use this extension, you need to enable access to your clipboard.\n
-            If you did enable access, please click the icon again. :)`)
-        }
-    })
+    const matched = url.match(regex)
 
+    if (matched.length > 0){
+        try {
+            const hasPermissions = await permissionsCheck();
+    
+            if (hasPermissions) {
+    
+                const contentLinks = gatherUrls(matched[0]);
+                if (contentLinks.length) {
+                    updateClipboard(contentLinks)
+                }
+    
+            } else {
+                alert(`In order to use this extension, you need to enable access to your clipboard.\n
+                If you did enable access, please click the icon again. :)`);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
 }
 
 sweep()
