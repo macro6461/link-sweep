@@ -1,7 +1,7 @@
 {
     "name": "LinkSweep",
     "description": "Automatically aggregates and copies links within a Medium blog post.",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "manifest_version": 3,
     "icons": {
         "16": "sweepicon.png",
