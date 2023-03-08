@@ -1,6 +1,6 @@
 {
     "name": "LinkSweep",
-    "description": "Automatically aggregates and copies links within a Medium blog post.",
+    "description": "Automatically aggregates and copies links within a Medium or Blogger blog post.",
     "version": "1.2.0",
     "manifest_version": 3,
     "icons": {
