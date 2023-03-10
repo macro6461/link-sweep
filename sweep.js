@@ -85,7 +85,7 @@ popupHelper = (isNotAvailable, err, noLinks) => {
     if (isNotAvailable){
         middle = `
             <div>
-                <p>LinkSweep does not have access to this website. :(</p>
+                <p>Link Sweep does not have access to this website. :(</p>
             </div>
         `
     } 
@@ -96,7 +96,7 @@ popupHelper = (isNotAvailable, err, noLinks) => {
             <p>Could not copy links. :(</p>
             <p style="color: red;">${err}</p>
             <p>If Document is not focused, simply click in the post and try again.</p>
-            <p>Thanks for using LinkSweep!</p>
+            <p>Thanks for using Link Sweep!</p>
         </div>
     `
     } 
@@ -105,7 +105,7 @@ popupHelper = (isNotAvailable, err, noLinks) => {
         middle = `
         <div>
             <p>There are no links in this post.</p>
-            <p>Thanks for using LinkSweep!</p>
+            <p>Thanks for using Link Sweep!</p>
         </div>
         `
     }
@@ -119,7 +119,7 @@ createPopUp = (isNotAvailable, err, noLinks) => {
     const imgUrl = chrome.runtime.getURL('./assets/sweepicon.png')
     const html = `
         <div id="link-sweep-popup" class="">
-        <img src=${imgUrl} alt="LinkSweep Logo" title="LinkSweep Logo" id="imgtestee"/>
+        <img src=${imgUrl} alt="LinkSweep Logo" title="Link Sweep Logo" id="imgtestee"/>
         <button id="close-link-sweep">x</button>
             ${middle}
             <a href="https://paypal.me/mattcroak?country.x=US&amp;locale.x=en_US" target="_blank">Paypal</a>

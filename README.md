@@ -1,8 +1,6 @@
-# LinkSweep
+# Link Sweep
 
-This is the corresponding source code for LinkSweep, the Chrome extension that's sweeping across the web! 
-
-Or at least across Medium and Blogger :)
+This is the corresponding source code for Link Sweep, the Chrome extension that's sweeping across the web! 
 
 ## Purpose
 
@@ -14,7 +12,7 @@ a) Go through your post again, copying all of the links one by one and pasting t
 
 b) As you write, copy and paste your links in another app, such as Notepad, and then at the end copy all of them from your third party app and back into the blog post.
 
-c) Download LinkSweep and copy all links in the click of a button. Once copied, you can paste them whenever you want!
+c) Download Link Sweep and copy all links in the click of a button. Once copied, you can paste them whenever you want!
 
 With option C, you save time and can focus on what's most important: writing. 
 
@@ -34,7 +32,11 @@ You can stay within your browser, and within your browser window in which you're
 
 ## Support
 
-The extension currently works for Medium and Blogger. I am working on adding support for other platforms (and feel free to comment some suggestions!)
+- Medium
+- Blogger
+- Tumblr
+
+I am working on adding support for other platforms (and feel free to comment some suggestions!)
 
 ## Why not use a regular popup?
 

@@ -1,5 +1,5 @@
 {
-    "name": "LinkSweep",
+    "name": "Link Sweep",
     "description": "Automatically aggregates and copies links within a Medium or Blogger blog post.",
     "version": "1.2.1",
     "manifest_version": 3,
@@ -37,7 +37,7 @@
         "service_worker": "background.js"
     },
     "action":{
-        "default_title": "LinkSweep",
+        "default_title": "Link Sweep",
         "default_icon": "./assets/sweepicon.png"
     }
 }
