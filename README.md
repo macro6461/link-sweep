@@ -30,14 +30,6 @@ You can stay within your browser, and within your browser window in which you're
 4. When you're done writing and you want to collect all of the links in your post, click the extension. 
 5. Paste the aggregated links wherever you please.
 
-## Support
-
-- Medium
-- Blogger
-- Tumblr
-
-I am working on adding support for other platforms (and feel free to comment some suggestions!)
-
 ## Why not use a regular popup?
 
 Something that I noticed that made the clipboard copying difficult was that the webpage needed to be focused. However, when an extension popup is open, it is removing focus from the webpage. 
@@ -47,6 +39,14 @@ Only when I immediately clicked the webpage after clicking the extension AND exe
 Not user friendly at all.
 
 To maintain focus I decided to just insert my own custom popup after clicking the extension. A bit of a hack but it was the only way I could ensure smooth UX and consistent copying via `navigator.clipboard...`.
+
+## Support
+
+- Medium
+- Blogger
+- Tumblr
+
+I am working on adding support for other platforms (and feel free to comment some suggestions!)
 
 [Upgrade your free Medium membership](https://matt-croak.medium.com/membership) and receive unlimited, ad-free, stories from thousands of writers on a wide variety of publications. This is an affiliate link and a portion of your membership helps me be rewarded for the content I create.
 
