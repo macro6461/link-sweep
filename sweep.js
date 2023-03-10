@@ -1,19 +1,24 @@
 gatherUrls = (type) =>{
     const functionsObj = {
         'medium': mediumHelper,
-        'blogger': bloggerHelper
+        'blogger': bloggerHelper,
+        'tumblr': tumblrHelper
     }
     const linkObj = {}
     const helper = functionsObj[type]
-    const links = document.links
+    const links = type === "tumblr" 
+    ? tumblrLinksHelper() 
+    : document.links
     for (let i = 0; i < links.length; ++i){
         let link = links[i]
         link = helper(link)
         linkObj[link] = link
     }
-    return Object.values(linkObj).join("\n").trim()
+    var str = type === "tumblr" ? "\n\n" : "\n"
+    return Object.values(linkObj).join(str).trim()
 }
 
+///////// HELPERS
 mediumHelper = (link) => {
     if (link.className.indexOf('markup--p') > -1){
         let l = link.href.split(/\?url\=/)[1]
@@ -28,6 +33,18 @@ bloggerHelper = (link) => {
         return JSON.parse(link.getAttribute('data-original-attrs'))['data-original-href']
     }
 }
+
+tumblrLinksHelper = () => {
+    // do this rather than get EVERY link on a tumblr webpage
+    let container = document.getElementsByClassName('block-editor-writing-flow')[0]
+    return container.getElementsByTagName("a")
+}
+
+tumblrHelper = (link) => {
+    return link.href
+}
+
+///////// END OF HELPERS
 
 permissionsCheck = async () => {
     const read = await navigator.permissions.query({
@@ -51,10 +68,12 @@ updateClipboard = async (content) => {
 }
 
 removeSelf = (e) => {
-    e.target.parentElement.parentElement.remove()
+    if (e.target.id === 'close-link-sweep'){
+        e.target.parentElement.parentElement.remove()
+    }
 }
 
-popupHelper = (isNotAvailable, err) => {
+popupHelper = (isNotAvailable, err, noLinks) => {
     let middle = `
             <div>
                 <p>Links copied to clipboard!</p>
@@ -69,8 +88,8 @@ popupHelper = (isNotAvailable, err) => {
                 <p>LinkSweep does not have access to this website. :(</p>
             </div>
         `
-    }
-
+    } 
+    
     if (err){
         middle = `
         <div>
@@ -80,17 +99,27 @@ popupHelper = (isNotAvailable, err) => {
             <p>Thanks for using LinkSweep!</p>
         </div>
     `
+    } 
+    
+    if (noLinks){
+        middle = `
+        <div>
+            <p>There are no links in this post.</p>
+            <p>Thanks for using LinkSweep!</p>
+        </div>
+        `
     }
 
     return middle
 }
 
-createPopUp = (isNotAvailable, err) => {
-    const middle = popupHelper(isNotAvailable, err)
+createPopUp = (isNotAvailable, err, noLinks) => {
+
+    const middle = popupHelper(isNotAvailable, err, noLinks)
     const imgUrl = chrome.runtime.getURL('./assets/sweepicon.png')
     const html = `
-        <div id="link-sweep-popup">
-        <img src=${imgUrl} alt="LinkSweep Logo" title="LinkSweep Logo"/>
+        <div id="link-sweep-popup" class="">
+        <img src=${imgUrl} alt="LinkSweep Logo" title="LinkSweep Logo" id="imgtestee"/>
         <button id="close-link-sweep">x</button>
             ${middle}
             <a href="https://paypal.me/mattcroak?country.x=US&amp;locale.x=en_US" target="_blank">Paypal</a>
@@ -100,30 +129,30 @@ createPopUp = (isNotAvailable, err) => {
     `
     const popup = document.createElement('div')
     popup.id = "link-sweep-popup-outer"
+    popup.className = "xxxxxxxxx"
     popup.innerHTML = html
-    // Use top.document to access the outermost document.
-    // Useful for blogger which uses an iframe for the post editing space.
-    // Works for both Medium and Blogger.
+ 
     top.document.body.appendChild(popup)
-    top.document.getElementById('close-link-sweep').addEventListener('click', removeSelf)
+    // needed to add it to document because Tumblr prevents adding events to other elements
+    top.document.addEventListener('click', removeSelf)
 }
 
 sweep = async () => {
-    // be sure to remove any remaining popups
-    var orphan = document.getElementById('link-sweep-popup-outer')
-    if (orphan) orphan.remove()
 
     const url = window.location.href
-    const regex = /medium|blogger/g;
+    const regex = /medium|blogger|tumblr/g;
     const matched = url.match(regex)
 
     if (matched && matched.length > 0){
         try {
             const hasPermissions = await permissionsCheck();
             if (hasPermissions) {
+                // be sure to remove any remaining popups
                 const contentLinks = gatherUrls(matched[0]);
-                if (contentLinks.length) {
+                if (contentLinks.length > 0) {
                     updateClipboard(contentLinks)
+                } else {
+                    createPopUp(false, false, true)
                 }
             } else {
                 createPopUp(false, 'Please enable clipboard access for this website.')
@@ -134,6 +163,18 @@ sweep = async () => {
     } else {
         createPopUp(true)
     }
+    // For some reason, previous means of getting existing one by ID and removing before recreating
+    // didn't work correctly on Tumblr. Need to assign class and remove this way.
+    // Works for Medium, Blogger and Tumblr
+    setTimeout(()=>{
+        var orphanPopups = top.document.getElementsByClassName('xxxxxxxxx')
+        if (orphanPopups.length > 1){
+            // orphanPopups.length - 2 because we only want the last one added
+            for (var i = 0; i < orphanPopups.length - 1; ++i){
+                orphanPopups[i].remove()
+            }
+        }
+    }, 500)
 }
 
 sweep()
