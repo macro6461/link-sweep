@@ -26,12 +26,6 @@
     min-height: 275px;
 }
 
-#link-sweep-popup-outer button{
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
 #link-sweep-popup {
     position: relative;
     display: block;
@@ -49,14 +43,7 @@
 }
 
 #link-sweep-popup a {
-    display: block;
-    margin: auto;
     color: #45b6fe;
-}
-
-#link-sweep-popup a+a+a{
-    font-size: 8px;
-    float: right;
 }
 
 #link-sweep-popup img {
@@ -64,4 +51,31 @@
     display: block;
     margin: auto;
     animation: sweep 2s infinite forwards;
+}
+
+#link-sweep-popup-outer button{
+    display: block;
+    margin: auto;
+}
+
+#close-link-sweep{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.links-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-link-container {
+    text-align: right;
+}
+
+.icon-link-container a {
+    font-size: 8px;
+    margin-top: 5px;
+    color: #45b6fe;
 }

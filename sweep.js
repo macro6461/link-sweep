@@ -67,16 +67,17 @@ updateClipboard = async (content) => {
     );
 }
 
+// POPUP RELATED CODE
+
 removeSelf = (e) => {
     if (e.target.id === 'close-link-sweep'){
         e.target.parentElement.parentElement.remove()
     }
 }
-// POPUP RELATED CODE
 
 popupHelper = (isNotAvailable, err, noLinks) => {
     let middle = `
-            <div>
+            <div id="popup-middle">
                 <p>Links copied to clipboard!</p>
                 <p>If you liked this tool, please leave a tip or follow me on Medium!</p>
                 <p>Please report any bugs on Github.</p>
@@ -85,7 +86,7 @@ popupHelper = (isNotAvailable, err, noLinks) => {
     `
     if (isNotAvailable){
         middle = `
-            <div>
+            <div id="popup-middle">
                 <p>Link Sweep does not have access to this website. :(</p>
             </div>
         `
@@ -93,7 +94,7 @@ popupHelper = (isNotAvailable, err, noLinks) => {
     
     if (err){
         middle = `
-        <div>
+        <div id="popup-middle">
             <p>Could not copy links. :(</p>
             <p style="color: red;">${err}</p>
             <p>If Document is not focused, simply click in the post and try again.</p>
@@ -104,7 +105,7 @@ popupHelper = (isNotAvailable, err, noLinks) => {
     
     if (noLinks){
         middle = `
-        <div>
+        <div id="popup-middle">
             <p>There are no links in this post.</p>
             <p>Thanks for using Link Sweep!</p>
         </div>
@@ -114,19 +115,46 @@ popupHelper = (isNotAvailable, err, noLinks) => {
     return middle
 }
 
-createPopUp = (isNotAvailable, err, noLinks) => {
+handleFormatChange = (format) => {
+    
+}
 
-    debugger
+createFormattingPopUp = () =>{
+    document.getElementById("popup-middle").innerHTML = `
+        <div>
+            <input type="radio" id="raw" name="raw" value="raw"
+                onclick="${(e)=>handleFormatChange(e)}">
+            <label for="raw">Raw Links</label>
+        </div>
+
+        <div>
+            <input type="radio" id="slugs" name="slugs" value="Slugs" onclick="${(e)=>handleFormatChange(e)}">
+            <label for="slugs">Slugs</label>
+        </div>
+
+        <div>
+            <input type="radio" id="inline-slugs" name="inline-slugs" value="inline-slugs" onclick="${(e)=>handleFormatChange(e)}">
+            <label for="inline-slugs">Inline Slugs</label>
+        </div>
+    `
+}
+
+createPopUp = (isNotAvailable, err, noLinks) => {
 
     const middle = popupHelper(isNotAvailable, err, noLinks)
     const imgUrl = chrome.runtime.getURL('./assets/sweepicon.png')
     const html = `
-        <div id="link-sweep-popup" class="">
-        <img src=${imgUrl} alt="LinkSweep Logo" title="Link Sweep Logo" id="imgtestee"/>
-        <button id="close-link-sweep">x</button>
+        <div id="link-sweep-popup">
+            <img src=${imgUrl} alt="LinkSweep Logo" title="Link Sweep Logo" id="imgtestee"/>
+            <button id="close-link-sweep">x</button>
             ${middle}
-            <a href="https://paypal.me/mattcroak?country.x=US&amp;locale.x=en_US" target="_blank">Paypal</a>
-            <a href="https://matt-croak.medium.com/membership" target="_blank">Medium</a>
+            <div class="links-container">
+                <a href="https://paypal.me/mattcroak?country.x=US&amp;locale.x=en_US" target="_blank">Paypal</a>
+                <a href="https://matt-croak.medium.com/membership" target="_blank">Medium</a>
+            </div>
+        </div>
+        <button id="popup-format-button">Formatting</button>
+        <div class="icon-link-container">
             <a href="https://www.vecteezy.com/free-vector/broom-icon" target="_blank">Broom Icon Vectors by Vecteezy</a>
         </div>
     `
@@ -138,6 +166,7 @@ createPopUp = (isNotAvailable, err, noLinks) => {
     top.document.body.appendChild(popup)
     // needed to add it to document because Tumblr prevents adding events to other elements
     top.document.addEventListener('click', removeSelf)
+    top.document.getElementById('popup-format-button').addEventListener('click', createFormattingPopUp)
 }
 
 sweep = async () => {
