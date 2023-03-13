@@ -72,6 +72,7 @@ removeSelf = (e) => {
         e.target.parentElement.parentElement.remove()
     }
 }
+// POPUP RELATED CODE
 
 popupHelper = (isNotAvailable, err, noLinks) => {
     let middle = `
@@ -114,6 +115,8 @@ popupHelper = (isNotAvailable, err, noLinks) => {
 }
 
 createPopUp = (isNotAvailable, err, noLinks) => {
+
+    debugger
 
     const middle = popupHelper(isNotAvailable, err, noLinks)
     const imgUrl = chrome.runtime.getURL('./assets/sweepicon.png')
