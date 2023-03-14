@@ -1,7 +1,7 @@
 {
     "name": "Link Sweep",
-    "description": "Automatically aggregates and copies links within a Medium or Blogger blog post.",
-    "version": "1.3.1",
+    "description": "Automatically aggregates and copies links within a Blogger blog post.",
+    "version": "1.3.2",
     "manifest_version": 3,
     "icons": {
         "16": "./assets/sweepicon.png",
